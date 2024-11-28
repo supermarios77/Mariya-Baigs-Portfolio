@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 
 export default function Home() {
   return (
-    <div className="lg:px-40 py-10 lg:py-20">
+    <div className="mt-20 flex items-center justify-center p-4 flex-col">
       <Hero />
       <Certificate />
     </div>
