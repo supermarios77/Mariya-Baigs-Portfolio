@@ -1,11 +1,13 @@
-import { Certificate } from "@/components/Certificate";
 import Hero from "@/components/Hero";
+import ProjectsSection from "@/components/ProjectsSection";
 
 export default function Home() {
   return (
-    <div className="mt-20 flex items-center justify-center p-4 flex-col">
-      <Hero />
-      <Certificate />
+    <div className="flex flex-col">
+      <div className="mt-20 flex items-center justify-center p-4">
+        <Hero />
+      </div>
+      <ProjectsSection />
     </div>
   );
 }

@@ -15,8 +15,8 @@ import {
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Projects", href: "/projects" },
-  { name: "Contact", href: "/contact" },
+  { name: "Projects", href: "/" },
+  { name: "Contact", href: "/" },
 ];
 
 export function Navbar() {
