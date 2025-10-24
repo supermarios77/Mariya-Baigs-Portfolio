@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTerminal } from '../../context/TerminalContext';
-import { useSound } from '../../hooks/useSound';
+import { useTerminal } from '../context/TerminalContext';
+import { useSound } from '../hooks/useSound';
 
 interface AIChatProps {
   onExit: () => void;

@@ -3,7 +3,7 @@
 import { TerminalState } from '../../context/TerminalContext';
 import { Mail, Github, Linkedin, Twitter } from 'lucide-react';
 
-export default function ContactCommand(args: string[], state: TerminalState): React.ReactNode {
+export default function ContactCommand(_args: string[], _state: TerminalState): React.ReactNode {
   const contacts = [
     {
       platform: 'Email',
@@ -42,7 +42,7 @@ export default function ContactCommand(args: string[], state: TerminalState): Re
       </div>
       
       <div className="text-terminal-text">
-        I'm always excited to discuss new opportunities, collaborate on interesting projects, 
+        I&apos;m always excited to discuss new opportunities, collaborate on interesting projects, 
         or just chat about technology and AI. Feel free to reach out!
       </div>
 
@@ -69,9 +69,9 @@ export default function ContactCommand(args: string[], state: TerminalState): Re
       </div>
 
       <div className="mt-6 p-4 bg-terminal-green/10 border border-terminal-green/30 rounded-lg">
-        <div className="text-terminal-green font-bold mb-2">Let's Collaborate!</div>
+        <div className="text-terminal-green font-bold mb-2">Let&apos;s Collaborate!</div>
         <div className="text-terminal-text text-sm">
-          I'm particularly interested in:
+          I&apos;m particularly interested in:
         </div>
         <ul className="text-terminal-text text-sm mt-2 space-y-1">
           <li>• AI/ML projects and research</li>

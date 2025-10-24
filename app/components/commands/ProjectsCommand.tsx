@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TerminalState } from '../../context/TerminalContext';
 import { ExternalLink, Github } from 'lucide-react';
 
-export default function ProjectsCommand(args: string[], state: TerminalState): React.ReactNode {
+export default function ProjectsCommand(_args: string[], _state: TerminalState): React.ReactNode {
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   const projects = [

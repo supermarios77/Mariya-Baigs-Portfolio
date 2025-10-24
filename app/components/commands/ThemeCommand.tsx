@@ -2,7 +2,7 @@
 
 import { TerminalState } from '../../context/TerminalContext';
 
-export default function ThemeCommand(args: string[], state: TerminalState): React.ReactNode {
+export default function ThemeCommand(args: string[], _state: TerminalState): React.ReactNode {
   const theme = args[0]?.toLowerCase();
 
   if (!theme) {

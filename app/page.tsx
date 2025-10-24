@@ -6,7 +6,7 @@ import BootAnimation from './components/BootAnimation';
 import Terminal from './components/Terminal';
 
 function TerminalApp() {
-  const { state, dispatch } = useTerminal();
+  const { dispatch } = useTerminal();
   const [showBoot, setShowBoot] = useState(true);
 
   const handleBootComplete = () => {

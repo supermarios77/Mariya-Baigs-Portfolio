@@ -3,17 +3,17 @@
 import { TerminalState } from '../../context/TerminalContext';
 
 const EasterEggCommands = {
-  sudo: (args: string[], state: TerminalState): React.ReactNode => (
+  sudo: (_args: string[], _state: TerminalState): React.ReactNode => (
     <div className="space-y-2">
       <div className="text-red-400">sudo: permission denied</div>
       <div className="text-terminal-green">Nice try! Admin privileges denied.</div>
       <div className="text-terminal-text text-sm">
-        This is Mariya's portfolio, not a real terminal 😉
+        This is Mariya&apos;s portfolio, not a real terminal 😉
       </div>
     </div>
   ),
 
-  coffee: (args: string[], state: TerminalState): React.ReactNode => (
+  coffee: (_args: string[], _state: TerminalState): React.ReactNode => (
     <div className="space-y-2">
       <div className="text-terminal-accent">☕ Brew initiated...</div>
       <div className="text-terminal-green">You now run on caffeine.</div>
@@ -23,7 +23,7 @@ const EasterEggCommands = {
     </div>
   ),
 
-  motivation: (args: string[], state: TerminalState): React.ReactNode => {
+  motivation: (_args: string[], _state: TerminalState): React.ReactNode => {
     const quotes = [
       "Code is like humor. When you have to explain it, it's bad.",
       "The best error message is the one that never shows up.",
@@ -40,7 +40,7 @@ const EasterEggCommands = {
     return (
       <div className="space-y-2">
         <div className="text-terminal-violet font-bold">💡 Daily Motivation:</div>
-        <div className="text-terminal-text italic">"{randomQuote}"</div>
+        <div className="text-terminal-text italic">&quot;{randomQuote}&quot;</div>
         <div className="text-terminal-green text-sm">
           Keep coding, keep learning, keep building! 🚀
         </div>
@@ -48,7 +48,7 @@ const EasterEggCommands = {
     );
   },
 
-  paint: (args: string[], state: TerminalState): React.ReactNode => (
+  paint: (_args: string[], _state: TerminalState): React.ReactNode => (
     <div className="space-y-2">
       <div className="text-terminal-accent">🎨 ASCII Art Mode Activated</div>
       <div className="text-terminal-text font-mono text-xs">
@@ -81,10 +81,10 @@ const EasterEggCommands = {
     </div>
   ),
 
-  geography: (args: string[], state: TerminalState): React.ReactNode => (
+  geography: (_args: string[], _state: TerminalState): React.ReactNode => (
     <div className="space-y-2">
       <div className="text-terminal-accent">🌍 Geography Check:</div>
-      <div className="text-terminal-green">Rocks still exist. They're fine.</div>
+      <div className="text-terminal-green">Rocks still exist. They&apos;re fine.</div>
       <div className="text-terminal-text text-sm">
         Mountains: Still tall<br/>
         Oceans: Still wet<br/>

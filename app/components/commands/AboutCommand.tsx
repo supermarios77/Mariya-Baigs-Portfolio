@@ -2,7 +2,7 @@
 
 import { TerminalState } from '../../context/TerminalContext';
 
-export default function AboutCommand(args: string[], state: TerminalState): React.ReactNode {
+export default function AboutCommand(_args: string[], _state: TerminalState): React.ReactNode {
   return (
     <div className="space-y-4">
       <div className="text-terminal-accent font-bold text-lg">
@@ -10,8 +10,8 @@ export default function AboutCommand(args: string[], state: TerminalState): Reac
       </div>
       
       <div className="text-terminal-text">
-        I'm a 14-year-old homeschooled developer with a passion for technology and learning. 
-        I'm the youngest certified TensorFlow developer and love building things that solve 
+        I&apos;m a 14-year-old homeschooled developer with a passion for technology and learning. 
+        I&apos;m the youngest certified TensorFlow developer and love building things that solve 
         real problems. Currently preparing for my GCSEs while exploring the fascinating world 
         of AI and machine learning.
       </div>
@@ -51,10 +51,10 @@ export default function AboutCommand(args: string[], state: TerminalState): Reac
       <div>
         <div className="text-terminal-green font-bold mb-2">Academic Journey:</div>
         <div className="text-terminal-text">
-          I'm homeschooled and currently in Year 9. I've finished my "First Aid in Maths" book 
-          and am now working through Geography (learning about rocks!). I'm honest about my 
+          I&apos;m homeschooled and currently in Year 9. I&apos;ve finished my &quot;First Aid in Maths&quot; book 
+          and am now working through Geography (learning about rocks!). I&apos;m honest about my 
           academic challenges - I struggle with subjects like Science, Geography, and History 
-          because I don't get instant results or motivation from them. I'm fine with basic Math 
+          because I don&apos;t get instant results or motivation from them. I&apos;m fine with basic Math 
           but need to work on Algebra. Programming gives me that instant feedback I crave!
         </div>
       </div>
@@ -73,10 +73,10 @@ export default function AboutCommand(args: string[], state: TerminalState): Reac
       <div>
         <div className="text-terminal-green font-bold mb-2">Philosophy:</div>
         <div className="text-terminal-text italic">
-          "I love programming because it gives me instant results and feedback. When I code, 
-          I can see my ideas come to life immediately. Traditional subjects don't give me 
-          that same satisfaction, but I'm working on finding ways to make them more engaging 
-          for myself."
+          &quot;I love programming because it gives me instant results and feedback. When I code, 
+          I can see my ideas come to life immediately. Traditional subjects don&apos;t give me 
+          that same satisfaction, but I&apos;m working on finding ways to make them more engaging 
+          for myself.&quot;
         </div>
       </div>
 

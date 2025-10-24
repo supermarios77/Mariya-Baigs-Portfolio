@@ -33,7 +33,7 @@ export default function Terminal() {
                   Welcome to Mariya's Terminal Portfolio! 🚀
                 </div>
                 <div className="text-terminal-text">
-                  I'm Mariya, a 14-year-old full-stack developer and the youngest certified TensorFlow developer. 
+                  I&apos;m Mariya, a 14-year-old full-stack developer and the youngest certified TensorFlow developer. 
                   Explore my work through interactive commands!
                 </div>
                 <div className="text-terminal-green">

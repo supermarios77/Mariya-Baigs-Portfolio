@@ -2,7 +2,7 @@
 
 import { TerminalState } from '../../context/TerminalContext';
 
-export default function HelpCommand(args: string[], state: TerminalState): React.ReactNode {
+export default function HelpCommand(_args: string[], _state: TerminalState): React.ReactNode {
   const commands = [
     { name: 'help', description: 'Show this help message' },
     { name: 'about', description: 'Learn about Mariya Baig' },

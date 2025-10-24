@@ -85,14 +85,14 @@ export default function AICommand(args: string[], state: TerminalState): React.R
       </div>
       
       <div className="text-terminal-text">
-        Welcome to AI mode! I'm your digital assistant, ready to chat about technology, 
-        answer questions about Mariya's work, or just have a friendly conversation.
+        Welcome to AI mode! I&apos;m your digital assistant, ready to chat about technology, 
+        answer questions about Mariya&apos;s work, or just have a friendly conversation.
       </div>
 
       <div className="p-4 bg-ai-bg border border-ai-accent/30 rounded-lg">
         <div className="text-ai-accent font-bold mb-2">AI Capabilities:</div>
         <ul className="text-terminal-text text-sm space-y-1">
-          <li>• Answer questions about Mariya's projects and skills</li>
+          <li>• Answer questions about Mariya&apos;s projects and skills</li>
           <li>• Discuss AI/ML concepts and technologies</li>
           <li>• Provide coding tips and best practices</li>
           <li>• Share random tech facts and jokes</li>
@@ -123,7 +123,7 @@ AICommand.exit = function(args: string[], state: TerminalState): React.ReactNode
   if (state.mode === 'CLI') {
     return (
       <div className="text-terminal-violet">
-        <div>You're already in CLI mode!</div>
+        <div>You&apos;re already in CLI mode!</div>
         <div className="text-terminal-green mt-1">
           Type <span className="text-terminal-accent">ai</span> to enter AI mode
         </div>
