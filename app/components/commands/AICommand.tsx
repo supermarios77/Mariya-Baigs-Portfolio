@@ -21,23 +21,23 @@ export default function AICommand(args: string[], state: TerminalState): React.R
       </div>
       
       <div className="text-terminal-text">
-        Welcome to AI mode! I'm your digital assistant, ready to chat about technology, 
-        answer questions about Mariya's work, or just have a friendly conversation.
+        Welcome to AI mode! I'm Mariya's AI assistant, powered by Gemini AI. 
+        I can tell you about her coding journey, projects, learning goals, or just chat!
       </div>
 
       <div className="p-4 bg-ai-bg border border-ai-accent/30 rounded-lg">
-        <div className="text-ai-accent font-bold mb-2">AI Capabilities:</div>
+        <div className="text-ai-accent font-bold mb-2">What I can help with:</div>
         <ul className="text-terminal-text text-sm space-y-1">
-          <li>• Answer questions about Mariya's projects and skills</li>
-          <li>• Discuss AI/ML concepts and technologies</li>
-          <li>• Provide coding tips and best practices</li>
-          <li>• Share random tech facts and jokes</li>
-          <li>• Help navigate the portfolio</li>
+          <li>• Mariya's technical skills and achievements</li>
+          <li>• Her current learning projects (Rust, Arabic, GCSE prep)</li>
+          <li>• Her academic journey and challenges</li>
+          <li>• Her hobbies and interests</li>
+          <li>• General coding and AI/ML discussions</li>
         </ul>
       </div>
 
       <div className="text-terminal-green">
-        <div>Switching to AI mode...</div>
+        <div>Switching to AI chat mode...</div>
         <div className="text-sm mt-1">
           Type <span className="text-terminal-accent">exit</span> to return to CLI mode
         </div>

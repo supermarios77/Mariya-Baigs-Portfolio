@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTerminal } from '../context/TerminalContext';
 import CommandHandler from './CommandHandler';
 import CommandOutput from './CommandOutput';
+import AIChat from './AIChat';
 import { useSound } from '../hooks/useSound';
 
 export default function Terminal() {
@@ -25,6 +26,42 @@ export default function Terminal() {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [state.history]);
+
+  // Add welcome message on first boot
+  useEffect(() => {
+    if (state.isBooted && state.history.length === 0) {
+      const welcomeId = Date.now().toString();
+      dispatch({
+        type: 'ADD_HISTORY_ITEM',
+        payload: {
+          id: `${welcomeId}-welcome`,
+          type: 'output',
+          content: (
+            <div className="space-y-3">
+              <div className="text-terminal-accent font-bold text-lg">
+                Welcome to Mariya's Terminal Portfolio! 🚀
+              </div>
+              <div className="text-terminal-text">
+                I'm Mariya Baig, a 14-year-old developer passionate about AI/ML and full-stack development.
+                Explore my work through interactive commands!
+              </div>
+              <div className="text-terminal-green">
+                <div className="font-bold mb-2">Quick Start:</div>
+                <div>• Type <span className="text-terminal-accent">help</span> to see all available commands</div>
+                <div>• Type <span className="text-terminal-accent">about</span> to learn more about me</div>
+                <div>• Type <span className="text-terminal-accent">projects</span> to see my work</div>
+                <div>• Type <span className="text-terminal-accent">ai</span> to chat with my AI assistant</div>
+              </div>
+              <div className="text-terminal-violet text-sm">
+                💡 Pro tip: Use arrow keys ↑↓ to navigate command history
+              </div>
+            </div>
+          ),
+          timestamp: new Date(),
+        },
+      });
+    }
+  }, [state.isBooted, state.history.length, dispatch]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -170,6 +207,17 @@ export default function Terminal() {
 
   if (!state.isBooted) {
     return null;
+  }
+
+  // Show AI chat mode
+  if (state.mode === 'AI') {
+    return (
+      <div className={`min-h-screen ${getThemeClasses()} transition-colors duration-300`}>
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+          <AIChat onExit={() => dispatch({ type: 'SET_MODE', payload: 'CLI' })} />
+        </div>
+      </div>
+    );
   }
 
   return (
