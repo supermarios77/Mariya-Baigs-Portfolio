@@ -68,8 +68,23 @@ Respond as Mariya's AI assistant:`;
     return NextResponse.json({ response: text });
   } catch (error) {
     console.error('Gemini API error:', error);
+    
+    let errorMessage = 'Failed to get AI response';
+    
+    if (error instanceof Error) {
+      if (error.message.includes('404')) {
+        errorMessage = 'Model not found. Please check the model name and API version.';
+      } else if (error.message.includes('API key')) {
+        errorMessage = 'Invalid API key. Please check your GEMINI_API_KEY environment variable.';
+      } else if (error.message.includes('quota')) {
+        errorMessage = 'API quota exceeded. Please try again later.';
+      } else {
+        errorMessage = error.message;
+      }
+    }
+    
     return NextResponse.json(
-      { error: 'Failed to get AI response' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
