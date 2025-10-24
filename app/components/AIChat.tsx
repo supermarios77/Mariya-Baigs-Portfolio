@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useTerminal } from '../context/TerminalContext';
 import { useSound } from '../hooks/useSound';
 
@@ -9,11 +11,19 @@ interface AIChatProps {
   onExit: () => void;
 }
 
+interface ChatMessage {
+  id: string;
+  role: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
+}
+
 export default function AIChat({ onExit }: AIChatProps) {
   const { state, dispatch } = useTerminal();
   const { playTypingSound, playCommandSound } = useSound();
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +37,7 @@ export default function AIChat({ onExit }: AIChatProps) {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }, [state.history]);
+  }, [state.history, chatHistory]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !isLoading) {
@@ -48,7 +58,17 @@ export default function AIChat({ onExit }: AIChatProps) {
     setIsLoading(true);
     playCommandSound(state.soundEnabled);
 
-    // Add user message to history
+    // Add user message to chat history
+    const userMessage: ChatMessage = {
+      id: `user-${Date.now()}`,
+      role: 'user',
+      content: message,
+      timestamp: new Date(),
+    };
+
+    setChatHistory(prev => [...prev, userMessage]);
+
+    // Add user message to terminal history
     const userMessageId = Date.now().toString();
     dispatch({
       type: 'ADD_HISTORY_ITEM',
@@ -61,12 +81,21 @@ export default function AIChat({ onExit }: AIChatProps) {
     });
 
     try {
+      // Prepare chat history for API
+      const apiChatHistory = chatHistory.map(msg => ({
+        role: msg.role,
+        content: msg.content,
+      }));
+
       const response = await fetch('/api/gemini', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ 
+          message,
+          chatHistory: apiChatHistory,
+        }),
       });
 
       if (!response.ok) {
@@ -79,7 +108,17 @@ export default function AIChat({ onExit }: AIChatProps) {
         throw new Error(data.error);
       }
 
-      // Add AI response to history
+      // Add AI response to chat history
+      const aiMessage: ChatMessage = {
+        id: `ai-${Date.now()}`,
+        role: 'ai',
+        content: data.response,
+        timestamp: new Date(),
+      };
+
+      setChatHistory(prev => [...prev, aiMessage]);
+
+      // Add AI response to terminal history
       const aiMessageId = Date.now().toString() + '-ai';
       dispatch({
         type: 'ADD_HISTORY_ITEM',
@@ -89,7 +128,11 @@ export default function AIChat({ onExit }: AIChatProps) {
           content: (
             <div className="space-y-2">
               <div className="text-ai-accent font-bold">AI:</div>
-              <div className="text-ai-text whitespace-pre-wrap">{data.response}</div>
+              <div className="text-ai-text prose prose-invert prose-sm max-w-none">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {data.response}
+                </ReactMarkdown>
+              </div>
             </div>
           ),
           timestamp: new Date(),
@@ -161,7 +204,34 @@ export default function AIChat({ onExit }: AIChatProps) {
           ref={chatRef}
           className="bg-black/50 border border-ai-accent/30 rounded-lg p-6 h-96 overflow-y-auto font-mono text-sm"
         >
-          <div className="space-y-3">
+          <div className="space-y-4">
+            {/* Show chat history */}
+            {chatHistory.map((message) => (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-2"
+              >
+                {message.role === 'user' ? (
+                  <div className="text-ai-accent">
+                    You: {message.content}
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="text-ai-accent font-bold">AI:</div>
+                    <div className="text-ai-text prose prose-invert prose-sm max-w-none">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {message.content}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+
+            {/* Show terminal history for context */}
             <AnimatePresence>
               {state.history.map((item) => (
                 <motion.div
