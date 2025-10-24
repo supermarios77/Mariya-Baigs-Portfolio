@@ -127,8 +127,16 @@ export default function Terminal() {
     // Handle special commands that change state
     if (command === 'ai') {
       dispatch({ type: 'SET_MODE', payload: 'AI' });
+      // Don't add to history, just switch mode
+      setInput('');
+      dispatch({ type: 'SET_HISTORY_INDEX', payload: -1 });
+      return;
     } else if (command === 'exit' && state.mode === 'AI') {
       dispatch({ type: 'SET_MODE', payload: 'CLI' });
+      // Don't add to history, just switch mode
+      setInput('');
+      dispatch({ type: 'SET_HISTORY_INDEX', payload: -1 });
+      return;
     } else if (command === 'clear') {
       dispatch({ type: 'CLEAR_HISTORY' });
       setInput('');

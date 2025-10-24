@@ -98,6 +98,12 @@ export default function AIChat({ onExit }: AIChatProps) {
 
     } catch (error) {
       const errorId = Date.now().toString() + '-error';
+      let errorMessage = 'Failed to get AI response';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
       dispatch({
         type: 'ADD_HISTORY_ITEM',
         payload: {
@@ -106,7 +112,16 @@ export default function AIChat({ onExit }: AIChatProps) {
           content: (
             <div className="text-red-400">
               <div className="font-bold">Error:</div>
-              <div>{error instanceof Error ? error.message : 'Failed to get AI response'}</div>
+              <div>{errorMessage}</div>
+              {errorMessage.includes('API key') && (
+                <div className="text-terminal-green text-sm mt-2">
+                  <div className="font-bold">To fix this:</div>
+                  <div>1. Get your Gemini API key from <span className="text-terminal-accent">https://makersuite.google.com/app/apikey</span></div>
+                  <div>2. Create a <span className="text-terminal-accent">.env.local</span> file</div>
+                  <div>3. Add: <span className="text-terminal-accent">GEMINI_API_KEY=your_key_here</span></div>
+                  <div>4. Restart the development server</div>
+                </div>
+              )}
             </div>
           ),
           timestamp: new Date(),
