@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "./theme-provider";
-import { Navbar } from "@/components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: "Mariya Baig - Portfolio",
-  description: "Full-stack Developer | TensorFlow Certified | Python Enthusiast",
+  title: "Mariya Baig - AI Terminal Portfolio",
+  description: "Full-stack developer with AI/ML expertise. Explore my work through an interactive terminal interface.",
 };
 
 export default function RootLayout({
@@ -17,19 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} dark:bg-black bg-white`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          {children}
-        </ThemeProvider>
+    <html lang="en">
+      <body
+        className={`${jetbrainsMono.variable} font-mono antialiased bg-terminal-bg text-terminal-text`}
+      >
+        {children}
       </body>
     </html>
   );
 }
-
