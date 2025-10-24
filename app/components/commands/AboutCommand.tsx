@@ -10,9 +10,10 @@ export default function AboutCommand(args: string[], state: TerminalState): Reac
       </div>
       
       <div className="text-terminal-text">
-        I'm a 14-year-old homeschooled developer with a passion for AI/ML and full-stack development. 
-        Despite being young, I've already achieved certification as the youngest TensorFlow developer 
-        and love building both frontend and backend applications.
+        I'm a 14-year-old homeschooled developer with a passion for technology and learning. 
+        I'm the youngest certified TensorFlow developer and love building things that solve 
+        real problems. Currently preparing for my GCSEs while exploring the fascinating world 
+        of AI and machine learning.
       </div>
 
       <div>
@@ -24,15 +25,15 @@ export default function AboutCommand(args: string[], state: TerminalState): Reac
           </div>
           <div className="space-y-1">
             <div className="text-terminal-accent">Backend:</div>
-            <div className="text-terminal-text ml-4">Node.js, Express.js, MongoDB, PostgreSQL</div>
+            <div className="text-terminal-text ml-4">Node.js, Express.js, PostgreSQL, MongoDB</div>
           </div>
           <div className="space-y-1">
             <div className="text-terminal-accent">AI/ML:</div>
-            <div className="text-terminal-text ml-4">TensorFlow (certified!), PyTorch, Python</div>
+            <div className="text-terminal-text ml-4">TensorFlow (certified), PyTorch, Python</div>
           </div>
           <div className="space-y-1">
-            <div className="text-terminal-accent">Other:</div>
-            <div className="text-terminal-text ml-4">iOS Development, Digital Marketing</div>
+            <div className="text-terminal-accent">Mobile & Other:</div>
+            <div className="text-terminal-text ml-4">iOS (Swift/SwiftUI), Digital Marketing</div>
           </div>
         </div>
       </div>
@@ -40,19 +41,21 @@ export default function AboutCommand(args: string[], state: TerminalState): Reac
       <div>
         <div className="text-terminal-green font-bold mb-2">Currently Learning:</div>
         <div className="text-terminal-text">
-          • Rust programming (Udemy course)<br/>
+          • Rust programming language<br/>
           • Arabic language<br/>
-          • Preparing for GCSEs (aiming to complete by 15!)
+          • Advanced neural network architectures<br/>
+          • Preparing for GCSEs (aiming to complete by next year)
         </div>
       </div>
 
       <div>
         <div className="text-terminal-green font-bold mb-2">Academic Journey:</div>
         <div className="text-terminal-text">
-          I'm homeschooled and currently in Year 9. While I excel in programming and find instant 
-          motivation in coding, I'm working on subjects like Geography (currently learning about rocks!), 
-          Science, and improving my Algebra skills. I've completed "First Aid in Maths" and am 
-          preparing for GCSEs next year.
+          I'm homeschooled and currently in Year 9. I've finished my "First Aid in Maths" book 
+          and am now working through Geography (learning about rocks!). I'm honest about my 
+          academic challenges - I struggle with subjects like Science, Geography, and History 
+          because I don't get instant results or motivation from them. I'm fine with basic Math 
+          but need to work on Algebra. Programming gives me that instant feedback I crave!
         </div>
       </div>
 
@@ -61,23 +64,26 @@ export default function AboutCommand(args: string[], state: TerminalState): Reac
         <div className="text-terminal-text">
           • Painting and drawing<br/>
           • Writing stories<br/>
-          • Reading (completed Harry Potter, Percy Jackson, Heroes of Olympus series, and more!)<br/>
-          • Building cool projects
+          • Reading (Harry Potter, Percy Jackson, Heroes of Olympus, Hitchhiker's Guide to Galaxy, and many more)<br/>
+          • Exploring new technologies<br/>
+          • Building creative projects
         </div>
       </div>
 
       <div>
         <div className="text-terminal-green font-bold mb-2">Philosophy:</div>
         <div className="text-terminal-text italic">
-          "Age is just a number when it comes to passion. I believe in learning through building, 
-          and every line of code is a step toward something amazing. The best way to learn is 
-          by doing, and that's exactly what I do every day."
+          "I love programming because it gives me instant results and feedback. When I code, 
+          I can see my ideas come to life immediately. Traditional subjects don't give me 
+          that same satisfaction, but I'm working on finding ways to make them more engaging 
+          for myself."
         </div>
       </div>
 
       <div className="text-terminal-violet text-sm">
         Type <span className="text-terminal-accent">projects</span> to see my work, 
-        or <span className="text-terminal-accent">ai</span> to chat with my AI assistant about my journey!
+        <span className="text-terminal-accent"> ai</span> to chat with my AI assistant, or 
+        <span className="text-terminal-accent"> contact</span> to get in touch!
       </div>
     </div>
   );
