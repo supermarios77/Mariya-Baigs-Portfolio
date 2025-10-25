@@ -77,6 +77,8 @@ ${conversationContext}
 
 Current user message: ${message}
 
+The message is from a guest visiting Mariya's portfolio, not Mariya herself.
+
 Respond as Mariya's AI assistant:`;
 
     const result = await model.generateContent(prompt);

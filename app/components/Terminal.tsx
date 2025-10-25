@@ -197,14 +197,6 @@ export default function Terminal() {
       : 'bg-black text-terminal-green';
   };
 
-  const getTerminalBorderClass = () => {
-    if (state.mode === 'AI') {
-      return 'border-ai-accent/30';
-    }
-    return state.theme === 'electric' 
-      ? 'border-terminal-green/30' 
-      : 'border-terminal-green/30';
-  };
 
   const getPromptColor = () => {
     if (state.mode === 'AI') {
@@ -225,10 +217,25 @@ export default function Terminal() {
   }
 
   return (
-    <div className={`min-h-screen ${getThemeClasses()} transition-colors duration-300`}>
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className={`min-h-screen ${getThemeClasses()} transition-colors duration-300 relative`}>
+      {/* Terminal header */}
+      <div className="absolute top-0 left-0 right-0 z-10 bg-terminal-bgSecondary/80 backdrop-blur-sm border-b border-terminal-border">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="text-terminal-textSecondary text-sm font-mono">
+            MariyaOS v1.4.2
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="text-terminal-textSecondary text-xs">
+              Terminal Mode
+            </div>
+            <div className="w-2 h-2 rounded-full bg-terminal-accent animate-glow-pulse" />
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 max-w-5xl pt-20">
         {/* Mobile-friendly command buttons */}
-        <div className="mb-4 flex flex-wrap gap-2 md:hidden">
+        <div className="mb-6 flex flex-wrap gap-2 md:hidden">
           {['help', 'about', 'projects', 'contact', 'ai'].map((cmd) => (
             <button
               key={cmd}
@@ -237,7 +244,7 @@ export default function Terminal() {
                 setInput(cmd);
                 setTimeout(() => executeCommand(), 100);
               }}
-              className="px-3 py-1 bg-terminal-green/20 text-terminal-green border border-terminal-green/30 rounded text-sm hover:bg-terminal-green/30 transition-colors"
+              className="px-3 py-1 bg-terminal-bgSecondary/50 text-terminal-accent border border-terminal-border rounded-lg text-sm hover:bg-terminal-accent/10 hover:border-terminal-accent transition-all duration-300 font-mono"
             >
               {cmd}
             </button>
@@ -245,11 +252,12 @@ export default function Terminal() {
         </div>
 
         {/* Terminal window */}
-        <div 
+        <motion.div 
           ref={terminalRef}
-          className={`bg-black/50 border ${getTerminalBorderClass()} rounded-lg p-6 h-96 overflow-y-auto font-mono text-sm`}
+          className="bg-terminal-bgSecondary/80 backdrop-blur-sm border border-terminal-border rounded-2xl p-6 h-[600px] overflow-y-auto font-mono text-sm shadow-terminal-glow relative terminal-glow"
         >
-          <div className="space-y-2">
+          {/* Terminal content */}
+          <div className="space-y-3">
             <AnimatePresence>
               {state.history.map((item) => (
                 <motion.div
@@ -257,7 +265,7 @@ export default function Terminal() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <CommandOutput item={item} />
                 </motion.div>
@@ -266,15 +274,17 @@ export default function Terminal() {
           </div>
 
           {/* Input line */}
-          <div className="flex items-center mt-4">
-            {getPrompt()}
+          <div className="flex items-center mt-6 pt-4 border-t border-terminal-border">
+            <span className={`${getPromptColor()} neon-text`}>
+              {getPrompt()}
+            </span>
             <input
               ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-accent"
+              className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-accent ml-2"
               placeholder="Type a command..."
               autoComplete="off"
               spellCheck="false"
@@ -282,14 +292,14 @@ export default function Terminal() {
             <motion.div
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
-              className="w-2 h-4 bg-terminal-accent ml-1"
+              className="w-2 h-4 ml-1 bg-terminal-accent neon-text"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Footer */}
-        <div className="mt-4 text-center text-xs text-terminal-green/60">
-          Type <span className="text-terminal-accent">help</span> to see available commands
+        <div className="mt-6 text-center text-xs text-terminal-textSecondary">
+          Type <span className="text-terminal-accent neon-text">help</span> for available commands
         </div>
       </div>
     </div>

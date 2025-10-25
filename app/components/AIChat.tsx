@@ -133,34 +133,43 @@ export default function AIChat({ onExit }: AIChatProps) {
     }
   };
 
-  const getPrompt = () => {
-    return (
-      <span className="text-ai-accent">
-        AI:{state.theme === 'electric' ? '~' : '$'}&nbsp;
-      </span>
-    );
-  };
 
   return (
-    <div className="min-h-screen bg-ai-bg text-ai-text transition-colors duration-300">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen bg-terminal-bg text-ai-text transition-colors duration-300 relative">
+      {/* AI Mode Header */}
+      <div className="absolute top-0 left-0 right-0 z-10 bg-ai-bgSecondary/80 backdrop-blur-sm border-b border-ai-border">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="text-ai-textSecondary text-sm font-mono">
+            MariyaOS v1.4.2 - AI Mode
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="text-ai-textSecondary text-xs">AI Mode Active</div>
+            <div className="w-2 h-2 rounded-full bg-ai-accent animate-glow-pulse" />
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 max-w-5xl pt-20">
         {/* AI Mode Header */}
-        <div className="mb-4 flex items-center justify-between">
-          <div className="text-ai-accent font-bold text-lg">
+        <div className="mb-6 flex items-center justify-between">
+          <div className="text-ai-accent font-bold text-xl neon-text">
             🤖 AI Chat Mode
           </div>
           <button
             onClick={handleExit}
-            className="px-3 py-1 bg-ai-accent/20 text-ai-accent border border-ai-accent/30 rounded text-sm hover:bg-ai-accent/30 transition-colors"
+            className="px-4 py-2 bg-ai-bgSecondary/50 text-ai-accent border border-ai-border rounded-lg text-sm hover:bg-ai-accent/10 hover:border-ai-accent transition-all duration-300 font-mono"
           >
             Exit AI Mode
           </button>
         </div>
 
         {/* Chat Window */}
-        <div 
+        <motion.div 
           ref={chatRef}
-          className="bg-black/70 border border-ai-accent/40 rounded-lg p-6 h-[500px] overflow-y-auto font-mono text-sm shadow-2xl"
+          className="bg-ai-bgSecondary/80 backdrop-blur-sm border border-ai-border rounded-2xl p-6 h-[500px] overflow-y-auto font-mono text-sm shadow-ai-glow relative ai-glow"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
           <div className="space-y-6">
             {/* Welcome message if no chat history */}
@@ -238,8 +247,10 @@ export default function AIChat({ onExit }: AIChatProps) {
           </div>
 
           {/* Input line */}
-          <div className="flex items-center mt-4">
-            {getPrompt()}
+          <div className="flex items-center mt-6 pt-4 border-t border-ai-border">
+            <span className="text-ai-accent neon-text">
+              AI:~$&nbsp;
+            </span>
             <input
               ref={inputRef}
               type="text"
@@ -247,7 +258,7 @@ export default function AIChat({ onExit }: AIChatProps) {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={isLoading}
-              className="flex-1 bg-transparent outline-none text-ai-text caret-ai-accent disabled:opacity-50"
+              className="flex-1 bg-transparent outline-none text-ai-text caret-ai-accent disabled:opacity-50 ml-2"
               placeholder={isLoading ? "AI is thinking..." : "Ask me anything about Mariya or technology..."}
               autoComplete="off"
               spellCheck="false"
@@ -255,14 +266,14 @@ export default function AIChat({ onExit }: AIChatProps) {
             <motion.div
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
-              className="w-2 h-4 bg-ai-accent ml-1"
+              className="w-2 h-4 bg-ai-accent ml-1 neon-text"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Footer */}
-        <div className="mt-4 text-center text-xs text-ai-accent/60">
-          Press <span className="text-ai-accent">Enter</span> to send, <span className="text-ai-accent">Escape</span> to exit
+        <div className="mt-6 text-center text-xs text-ai-textSecondary">
+          Press <span className="text-ai-accent neon-text">Enter</span> to send, <span className="text-ai-accent neon-text">Escape</span> to exit
         </div>
       </div>
     </div>
