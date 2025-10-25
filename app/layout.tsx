@@ -8,7 +8,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mariya-baigs-portfolio.vercel.app'),
+  metadataBase: new URL('https://mariyas-portfolio.vercel.app'),
   title: "Mariya Baig - AI Terminal Portfolio",
   description: "14-year-old full-stack developer and youngest certified TensorFlow developer. Explore my projects through an interactive terminal interface with AI chat integration.",
   keywords: [

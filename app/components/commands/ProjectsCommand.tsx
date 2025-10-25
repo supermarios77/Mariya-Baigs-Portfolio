@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from 'react';
 import { TerminalState } from '../../context/TerminalContext';
 import { ExternalLink, Github } from 'lucide-react';
 
 export default function ProjectsCommand(_args: string[], _state: TerminalState): React.ReactNode {
-  const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   const projects = [
     {
@@ -119,44 +117,35 @@ export default function ProjectsCommand(_args: string[], _state: TerminalState):
               </div>
             </div>
 
-            <div className="flex items-center space-x-4 mt-3">
-              <button
-                onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
-                className="text-terminal-accent hover:text-terminal-green transition-colors text-sm"
-              >
-                {expandedProject === project.id ? 'Hide Details' : 'Show Details'}
-              </button>
+            <div className="mt-3 pt-3 border-t border-terminal-green/20">
+              <div className="text-terminal-text text-sm mb-3">{project.details}</div>
               
-              {project.demo && (
-                <a 
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-1 text-terminal-green hover:text-terminal-accent transition-colors text-sm"
-                >
-                  <ExternalLink size={14} />
-                  <span>Demo</span>
-                </a>
-              )}
-              
-              {project.source && (
-                <a 
-                  href={project.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-1 text-terminal-green hover:text-terminal-accent transition-colors text-sm"
-                >
-                  <Github size={14} />
-                  <span>Source</span>
-                </a>
-              )}
-            </div>
-
-            {expandedProject === project.id && (
-              <div className="mt-3 pt-3 border-t border-terminal-green/20">
-                <div className="text-terminal-text text-sm">{project.details}</div>
+              <div className="flex items-center space-x-4">
+                {project.demo && (
+                  <a 
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-1 text-terminal-green hover:text-terminal-accent transition-colors text-sm"
+                  >
+                    <ExternalLink size={14} />
+                    <span>Demo</span>
+                  </a>
+                )}
+                
+                {project.source && (
+                  <a 
+                    href={project.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-1 text-terminal-green hover:text-terminal-accent transition-colors text-sm"
+                  >
+                    <Github size={14} />
+                    <span>Source</span>
+                  </a>
+                )}
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>
