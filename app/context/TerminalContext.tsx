@@ -18,7 +18,7 @@ export interface TerminalState {
   historyIndex: number;
   isBooted: boolean;
   soundEnabled: boolean;
-  theme: 'electric' | 'classic';
+  theme: 'cyan' | 'violet' | 'emerald' | 'amber';
 }
 
 type TerminalAction =
@@ -29,7 +29,7 @@ type TerminalAction =
   | { type: 'CLEAR_HISTORY' }
   | { type: 'SET_HISTORY_INDEX'; payload: number }
   | { type: 'TOGGLE_SOUND' }
-  | { type: 'SET_THEME'; payload: 'electric' | 'classic' };
+  | { type: 'SET_THEME'; payload: 'cyan' | 'violet' | 'emerald' | 'amber' };
 
 const initialState: TerminalState = {
   mode: 'CLI',
@@ -38,7 +38,7 @@ const initialState: TerminalState = {
   historyIndex: -1,
   isBooted: false,
   soundEnabled: true,
-  theme: 'electric',
+  theme: 'cyan',
 };
 
 function terminalReducer(state: TerminalState, action: TerminalAction): TerminalState {

@@ -135,31 +135,37 @@ export default function AIChat({ onExit }: AIChatProps) {
 
   return (
     <div className="min-h-screen bg-terminal-bg flex items-center justify-center p-4">
-      <div className="terminal-container ai-mode w-full max-w-4xl p-6 flex flex-col">
-        {/* AI Mode Header */}
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
-          <div className="text-ai-accent text-glow font-medium text-lg">
-            MariyaOS v2.0 – AI Mode
+      <div className="terminal-window ai-mode w-full max-w-4xl">
+        {/* macOS-style Title Bar */}
+        <div className="title-bar relative px-4 py-3 flex items-center justify-between">
+          <div className="window-dots">
+            <div className="window-dot red"></div>
+            <div className="window-dot yellow"></div>
+            <div className="window-dot green"></div>
+          </div>
+          <div className="text-terminal-secondary text-sm font-medium">
+            MariyaOS — AI Mode
           </div>
           <button
             onClick={handleExit}
-            className="px-3 py-1 bg-ai-accent/10 text-ai-accent border border-ai-accent/20 rounded text-sm hover:bg-ai-accent/20 transition-colors text-glow"
+            className="px-3 py-1 bg-ai-accent/10 text-ai-accent border border-ai-accent/20 rounded text-sm hover:bg-ai-accent/20 transition-colors"
           >
-            Exit AI Mode
+            Exit
           </button>
         </div>
 
-        {/* Chat Window */}
-        <div 
-          ref={chatRef}
-          className="flex-1 overflow-y-auto mb-4 space-y-2 min-h-[400px] max-h-[600px]"
-        >
-          <div className="space-y-6">
+        {/* Terminal Content */}
+        <div className="p-6 flex flex-col h-[600px]">
+          {/* Chat Window */}
+          <div 
+            ref={chatRef}
+            className="flex-1 overflow-y-auto mb-4 space-y-3 smooth-scroll"
+          >
             {/* Welcome message if no chat history */}
             {chatHistory.length === 0 && !isLoading && (
               <div className="text-center py-8">
-                <div className="text-ai-accent font-bold text-lg mb-2">Welcome to AI Chat!</div>
-                <div className="text-ai-text/80 text-sm">
+                <div className="text-ai-accent font-medium text-lg mb-2">AI Assistant Ready</div>
+                <div className="text-terminal-text text-sm">
                   I'm Mariya's AI assistant. Ask me anything about her work, technology, or just have a friendly chat!
                 </div>
               </div>
@@ -169,22 +175,22 @@ export default function AIChat({ onExit }: AIChatProps) {
             {chatHistory.map((message) => (
               <motion.div
                 key={message.id}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 2 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-3"
+                transition={{ duration: 0.2 }}
+                className="slide-up"
               >
                 {message.role === 'user' ? (
                   <div className="flex justify-end">
                     <div className="bg-ai-accent/20 text-ai-accent px-4 py-2 rounded-lg max-w-[80%] border border-ai-accent/30">
-                      <div className="font-semibold text-xs mb-1">You</div>
+                      <div className="font-medium text-xs mb-1">You</div>
                       <div>{message.content}</div>
                     </div>
                   </div>
                 ) : (
                   <div className="flex justify-start">
-                    <div className="bg-ai-bg/50 text-ai-text px-4 py-3 rounded-lg max-w-[90%] border border-ai-accent/20">
-                      <div className="text-ai-accent font-semibold text-xs mb-2">AI Assistant</div>
+                    <div className="bg-terminal-bg/50 text-ai-text px-4 py-3 rounded-lg max-w-[90%] border border-ai-accent/20">
+                      <div className="text-ai-accent font-medium text-xs mb-2">AI Assistant</div>
                       <div className="prose prose-invert prose-sm max-w-none">
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
                           {message.content}
@@ -202,8 +208,8 @@ export default function AIChat({ onExit }: AIChatProps) {
                 animate={{ opacity: 1 }}
                 className="flex justify-start"
               >
-                <div className="bg-ai-bg/50 text-ai-text px-4 py-3 rounded-lg border border-ai-accent/20">
-                  <div className="text-ai-accent font-semibold text-xs mb-2">AI Assistant</div>
+                <div className="bg-terminal-bg/50 text-ai-text px-4 py-3 rounded-lg border border-ai-accent/20">
+                  <div className="text-ai-accent font-medium text-xs mb-2">AI Assistant</div>
                   <div className="flex items-center space-x-2">
                     <div className="text-ai-text">Thinking</div>
                     <div className="flex space-x-1">
@@ -230,8 +236,8 @@ export default function AIChat({ onExit }: AIChatProps) {
           </div>
 
           {/* Input line */}
-          <div className="flex items-center border-t border-white/5 pt-4">
-            <span className="text-ai-accent text-glow">
+          <div className="flex items-center">
+            <span className="text-ai-accent">
               AI:~$&nbsp;
             </span>
             <input
@@ -249,14 +255,9 @@ export default function AIChat({ onExit }: AIChatProps) {
             <motion.div
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
-              className="w-2 h-4 bg-ai-accent ml-1 cursor-blink"
+              className="w-0.5 h-4 bg-ai-accent ml-1 cursor-blink"
             />
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-4 text-center text-xs text-ai-accent/60">
-          Press <span className="text-ai-accent">Enter</span> to send, <span className="text-ai-accent">Escape</span> to exit
         </div>
       </div>
     </div>

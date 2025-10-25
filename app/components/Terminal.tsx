@@ -31,25 +31,23 @@ export default function Terminal() {
           id: welcomeId,
           type: 'output',
           content: (
-            <div className="space-y-4">
-              <div className="text-terminal-accent text-glow font-medium text-lg">
-                Welcome to MariyaOS v2.0
+            <div className="space-y-3">
+              <div className="text-terminal-accent font-medium">
+                MariyaOS — Terminal
               </div>
               <div className="text-terminal-text">
-                I&apos;m Mariya, a 14-year-old full-stack developer and the youngest certified TensorFlow developer. 
-                Explore my work through interactive commands!
-              </div>
-              <div className="text-terminal-secondary">
-                <div className="font-medium mb-2">Quick Start:</div>
-                <div className="space-y-1 text-sm">
-                  <div>• Type <span className="text-terminal-accent text-glow">help</span> to see all available commands</div>
-                  <div>• Type <span className="text-terminal-accent text-glow">about</span> to learn more about me</div>
-                  <div>• Type <span className="text-terminal-accent text-glow">projects</span> to see my work</div>
-                  <div>• Type <span className="text-terminal-accent text-glow">ai</span> to chat with my AI assistant</div>
-                </div>
+                Welcome to Mariya&apos;s terminal interface. I&apos;m a 14-year-old full-stack developer 
+                and the youngest certified TensorFlow developer.
               </div>
               <div className="text-terminal-secondary text-sm">
-                💡 Pro tip: Use arrow keys ↑↓ to navigate command history
+                <div className="font-medium mb-1">Available commands:</div>
+                <div className="space-y-0.5">
+                  <div>• <span className="text-terminal-accent">help</span> — Show all commands</div>
+                  <div>• <span className="text-terminal-accent">about</span> — Learn about Mariya</div>
+                  <div>• <span className="text-terminal-accent">projects</span> — View portfolio</div>
+                  <div>• <span className="text-terminal-accent">ai</span> — Enter AI mode</div>
+                  <div>• <span className="text-terminal-accent">theme</span> — Change accent color</div>
+                </div>
               </div>
             </div>
           ),
@@ -132,7 +130,7 @@ export default function Terminal() {
       return;
     } else if (command.startsWith('theme ')) {
       const theme = command.split(' ')[1];
-      if (theme === 'electric' || theme === 'classic') {
+      if (theme === 'cyan' || theme === 'violet' || theme === 'emerald' || theme === 'amber') {
         dispatch({ type: 'SET_THEME', payload: theme });
       }
     } else if (command.startsWith('sound ')) {
@@ -162,21 +160,25 @@ export default function Terminal() {
   const getPrompt = () => {
     if (state.mode === 'AI') {
       return (
-        <span className="text-ai-accent text-glow">
+        <span className="text-ai-accent">
           AI:~$&nbsp;
         </span>
       );
     }
     return (
-      <span className="text-terminal-accent text-glow">
+      <span className="text-terminal-accent">
         visitor@mariyaos:~$&nbsp;
       </span>
     );
   };
 
-  const getContainerClass = () => {
-    const baseClass = "terminal-container min-h-screen flex flex-col";
-    return state.mode === 'AI' ? `${baseClass} ai-mode mode-transition` : baseClass;
+  const getWindowClass = () => {
+    const baseClass = "terminal-window";
+    if (state.mode === 'AI') return `${baseClass} ai-mode`;
+    if (state.theme === 'violet') return `${baseClass} violet-theme`;
+    if (state.theme === 'emerald') return `${baseClass} emerald-theme`;
+    if (state.theme === 'amber') return `${baseClass} amber-theme`;
+    return baseClass;
   };
 
   if (!state.isBooted) {
@@ -190,74 +192,80 @@ export default function Terminal() {
 
   return (
     <div className="min-h-screen bg-terminal-bg flex items-center justify-center p-4">
-      <div className={`${getContainerClass()} w-full max-w-4xl p-6`}>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
-          <div className="text-terminal-accent text-glow font-medium text-lg">
-            MariyaOS v2.0
+      <div className={`${getWindowClass()} w-full max-w-4xl`}>
+        {/* macOS-style Title Bar */}
+        <div className="title-bar relative px-4 py-3 flex items-center justify-between">
+          <div className="window-dots">
+            <div className="window-dot red"></div>
+            <div className="window-dot yellow"></div>
+            <div className="window-dot green"></div>
           </div>
-          <div className="text-terminal-secondary text-sm">
-            ⏻
+          <div className="text-terminal-secondary text-sm font-medium">
+            MariyaOS — Terminal
           </div>
+          <div className="w-12"></div> {/* Spacer for centering */}
         </div>
 
-        {/* Mobile-friendly command buttons */}
-        <div className="mb-4 flex flex-wrap gap-2 md:hidden">
-          {['help', 'about', 'projects', 'contact', 'ai'].map((cmd) => (
-            <button
-              key={cmd}
-              onClick={() => {
-                playCommandSound(state.soundEnabled);
-                setInput(cmd);
-                setTimeout(() => executeCommand(), 100);
-              }}
-              className="px-3 py-1 bg-terminal-accent/10 text-terminal-accent border border-terminal-accent/20 rounded text-sm hover:bg-terminal-accent/20 transition-colors text-glow"
-            >
-              {cmd}
-            </button>
-          ))}
-        </div>
-
-        {/* Output Area */}
-        <div 
-          ref={terminalRef}
-          className="flex-1 overflow-y-auto mb-4 space-y-2 min-h-[400px] max-h-[600px]"
-        >
-          <AnimatePresence>
-            {state.history.map((item) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="typing-effect"
+        {/* Terminal Content */}
+        <div className="p-6">
+          {/* Mobile-friendly command buttons */}
+          <div className="mb-4 flex flex-wrap gap-2 md:hidden">
+            {['help', 'about', 'projects', 'ai'].map((cmd) => (
+              <button
+                key={cmd}
+                onClick={() => {
+                  playCommandSound(state.soundEnabled);
+                  setInput(cmd);
+                  setTimeout(() => executeCommand(), 100);
+                }}
+                className="px-3 py-1 bg-terminal-accent/10 text-terminal-accent border border-terminal-accent/20 rounded text-sm hover:bg-terminal-accent/20 transition-colors"
               >
-                <CommandOutput item={item} />
-              </motion.div>
+                {cmd}
+              </button>
             ))}
-          </AnimatePresence>
-        </div>
+          </div>
 
-        {/* Input Line */}
-        <div className="flex items-center border-t border-white/5 pt-4">
-          {getPrompt()}
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-accent"
-            autoComplete="off"
-            spellCheck="false"
-            placeholder="Type a command..."
-          />
-          <motion.div
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ duration: 1, repeat: Infinity }}
-            className="w-2 h-4 bg-terminal-accent ml-1 cursor-blink"
-          />
+          {/* Output Area */}
+          <div 
+            ref={terminalRef}
+            className="smooth-scroll overflow-y-auto mb-4 space-y-1 min-h-[400px] max-h-[500px]"
+          >
+            <AnimatePresence>
+              {state.history.map((item) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 2 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -2 }}
+                  transition={{ duration: 0.2 }}
+                  className="slide-up"
+                >
+                  <CommandOutput item={item} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Input Line */}
+          <div className="flex items-center">
+            {getPrompt()}
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-accent"
+              autoComplete="off"
+              spellCheck="false"
+              placeholder="Type a command..."
+            />
+            <motion.div
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+              className="w-0.5 h-4 bg-terminal-accent ml-1 cursor-blink"
+            />
+          </div>
         </div>
       </div>
     </div>
