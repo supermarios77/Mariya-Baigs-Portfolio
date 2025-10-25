@@ -1,0 +1,40 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "bun run build",
+  "devCommand": "bun run dev",
+  "installCommand": "bun install",
+  "functions": {
+    "app/api/gemini/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "GEMINI_API_KEY": "@gemini_api_key"
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}

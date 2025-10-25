@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TerminalProvider, useTerminal } from './context/TerminalContext';
 import BootAnimation from './components/BootAnimation';
 import Terminal from './components/Terminal';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function TerminalApp() {
   const { dispatch } = useTerminal();
@@ -23,8 +24,10 @@ function TerminalApp() {
 
 export default function Home() {
   return (
-    <TerminalProvider>
-      <TerminalApp />
-    </TerminalProvider>
+    <ErrorBoundary>
+      <TerminalProvider>
+        <TerminalApp />
+      </TerminalProvider>
+    </ErrorBoundary>
   );
 }

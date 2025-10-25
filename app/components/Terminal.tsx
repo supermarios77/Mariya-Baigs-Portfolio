@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTerminal } from '../context/TerminalContext';
 import { useSound } from '../hooks/useSound';
@@ -82,7 +82,7 @@ export default function Terminal() {
     }
   };
 
-  const navigateHistory = (direction: number) => {
+  const navigateHistory = useCallback((direction: number) => {
     const newIndex = state.historyIndex + direction;
     if (newIndex >= -1 && newIndex < state.history.length) {
       dispatch({ type: 'SET_HISTORY_INDEX', payload: newIndex });
@@ -95,9 +95,9 @@ export default function Terminal() {
         }
       }
     }
-  };
+  }, [state.historyIndex, state.history, dispatch]);
 
-  const executeCommand = () => {
+  const executeCommand = useCallback(() => {
     const command = input.trim();
     if (!command) return;
 
@@ -155,7 +155,7 @@ export default function Terminal() {
 
     setInput('');
     dispatch({ type: 'SET_HISTORY_INDEX', payload: -1 });
-  };
+  }, [input, state, dispatch]);
 
   const getPrompt = () => {
     if (state.mode === 'AI') {
