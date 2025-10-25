@@ -1,5 +1,5 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { NextRequest, NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { NextRequest, NextResponse } from "next/server";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -8,7 +8,10 @@ export async function POST(request: NextRequest) {
     // Check if API key is configured
     if (!process.env.GEMINI_API_KEY) {
       return NextResponse.json(
-        { error: 'Gemini API key not configured. Please add GEMINI_API_KEY to your environment variables.' },
+        {
+          error:
+            "Gemini API key not configured. Please add GEMINI_API_KEY to your environment variables.",
+        },
         { status: 500 }
       );
     }
@@ -16,17 +19,22 @@ export async function POST(request: NextRequest) {
     const { message, chatHistory = [] } = await request.json();
 
     if (!message) {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Message is required" },
+        { status: 400 }
+      );
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     // Build conversation context
-    let conversationContext = '';
+    let conversationContext = "";
     if (chatHistory.length > 0) {
-      conversationContext = '\n\nCONVERSATION HISTORY:\n';
+      conversationContext = "\n\nCONVERSATION HISTORY:\n";
       chatHistory.forEach((msg: { role: string; content: string }) => {
-        conversationContext += `${msg.role === 'user' ? 'User' : 'AI'}: ${msg.content}\n`;
+        conversationContext += `${msg.role === "user" ? "User" : "AI"}: ${
+          msg.content
+        }\n`;
       });
     }
 
@@ -77,25 +85,24 @@ Respond as Mariya's AI assistant:`;
 
     return NextResponse.json({ response: text });
   } catch (error) {
-    console.error('Gemini API error:', error);
-    
-    let errorMessage = 'Failed to get AI response';
-    
+    console.error("Gemini API error:", error);
+
+    let errorMessage = "Failed to get AI response";
+
     if (error instanceof Error) {
-      if (error.message.includes('404')) {
-        errorMessage = 'Model not found. Please check the model name and API version.';
-      } else if (error.message.includes('API key')) {
-        errorMessage = 'Invalid API key. Please check your GEMINI_API_KEY environment variable.';
-      } else if (error.message.includes('quota')) {
-        errorMessage = 'API quota exceeded. Please try again later.';
+      if (error.message.includes("404")) {
+        errorMessage =
+          "Model not found. Please check the model name and API version.";
+      } else if (error.message.includes("API key")) {
+        errorMessage =
+          "Invalid API key. Please check your GEMINI_API_KEY environment variable.";
+      } else if (error.message.includes("quota")) {
+        errorMessage = "API quota exceeded. Please try again later.";
       } else {
         errorMessage = error.message;
       }
     }
-    
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    );
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

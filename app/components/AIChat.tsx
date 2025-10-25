@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useTerminal } from '../context/TerminalContext';
@@ -37,17 +37,23 @@ export default function AIChat({ onExit }: AIChatProps) {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }, [state.history, chatHistory]);
+  }, [chatHistory]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !isLoading) {
       e.preventDefault();
       handleSendMessage();
     } else if (e.key === 'Escape') {
-      onExit();
+      handleExit();
     } else if (e.key.length === 1) {
       playTypingSound(state.soundEnabled);
     }
+  };
+
+  const handleExit = () => {
+    // Clear terminal history when exiting AI mode
+    dispatch({ type: 'CLEAR_HISTORY' });
+    onExit();
   };
 
   const handleSendMessage = async () => {
@@ -67,18 +73,6 @@ export default function AIChat({ onExit }: AIChatProps) {
     };
 
     setChatHistory(prev => [...prev, userMessage]);
-
-    // Add user message to terminal history
-    const userMessageId = Date.now().toString();
-    dispatch({
-      type: 'ADD_HISTORY_ITEM',
-      payload: {
-        id: `${userMessageId}-user`,
-        type: 'input',
-        content: message,
-        timestamp: new Date(),
-      },
-    });
 
     try {
       // Prepare chat history for API
@@ -118,58 +112,22 @@ export default function AIChat({ onExit }: AIChatProps) {
 
       setChatHistory(prev => [...prev, aiMessage]);
 
-      // Add AI response to terminal history
-      const aiMessageId = Date.now().toString() + '-ai';
-      dispatch({
-        type: 'ADD_HISTORY_ITEM',
-        payload: {
-          id: aiMessageId,
-          type: 'output',
-          content: (
-            <div className="space-y-2">
-              <div className="text-ai-accent font-bold">AI:</div>
-              <div className="text-ai-text prose prose-invert prose-sm max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {data.response}
-                </ReactMarkdown>
-              </div>
-            </div>
-          ),
-          timestamp: new Date(),
-        },
-      });
-
     } catch (error) {
-      const errorId = Date.now().toString() + '-error';
       let errorMessage = 'Failed to get AI response';
       
       if (error instanceof Error) {
         errorMessage = error.message;
       }
       
-      dispatch({
-        type: 'ADD_HISTORY_ITEM',
-        payload: {
-          id: errorId,
-          type: 'output',
-          content: (
-            <div className="text-red-400">
-              <div className="font-bold">Error:</div>
-              <div>{errorMessage}</div>
-              {errorMessage.includes('API key') && (
-                <div className="text-terminal-green text-sm mt-2">
-                  <div className="font-bold">To fix this:</div>
-                  <div>1. Get your Gemini API key from <span className="text-terminal-accent">https://makersuite.google.com/app/apikey</span></div>
-                  <div>2. Create a <span className="text-terminal-accent">.env.local</span> file</div>
-                  <div>3. Add: <span className="text-terminal-accent">GEMINI_API_KEY=your_key_here</span></div>
-                  <div>4. Restart the development server</div>
-                </div>
-              )}
-            </div>
-          ),
-          timestamp: new Date(),
-        },
-      });
+      // Add error message to chat history
+      const errorMessageObj: ChatMessage = {
+        id: `error-${Date.now()}`,
+        role: 'ai',
+        content: `Error: ${errorMessage}${errorMessage.includes('API key') ? '\n\nTo fix this:\n1. Get your Gemini API key from https://makersuite.google.com/app/apikey\n2. Create a .env.local file\n3. Add: GEMINI_API_KEY=your_key_here\n4. Restart the development server' : ''}`,
+        timestamp: new Date(),
+      };
+      
+      setChatHistory(prev => [...prev, errorMessageObj]);
     } finally {
       setIsLoading(false);
     }
@@ -192,7 +150,7 @@ export default function AIChat({ onExit }: AIChatProps) {
             🤖 AI Chat Mode
           </div>
           <button
-            onClick={onExit}
+            onClick={handleExit}
             className="px-3 py-1 bg-ai-accent/20 text-ai-accent border border-ai-accent/30 rounded text-sm hover:bg-ai-accent/30 transition-colors"
           >
             Exit AI Mode
@@ -202,82 +160,77 @@ export default function AIChat({ onExit }: AIChatProps) {
         {/* Chat Window */}
         <div 
           ref={chatRef}
-          className="bg-black/50 border border-ai-accent/30 rounded-lg p-6 h-96 overflow-y-auto font-mono text-sm"
+          className="bg-black/70 border border-ai-accent/40 rounded-lg p-6 h-[500px] overflow-y-auto font-mono text-sm shadow-2xl"
         >
-          <div className="space-y-4">
+          <div className="space-y-6">
+            {/* Welcome message if no chat history */}
+            {chatHistory.length === 0 && !isLoading && (
+              <div className="text-center py-8">
+                <div className="text-ai-accent font-bold text-lg mb-2">Welcome to AI Chat!</div>
+                <div className="text-ai-text/80 text-sm">
+                  I'm Mariya's AI assistant. Ask me anything about her work, technology, or just have a friendly chat!
+                </div>
+              </div>
+            )}
+
             {/* Show chat history */}
             {chatHistory.map((message) => (
               <motion.div
                 key={message.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-                className="space-y-2"
+                transition={{ duration: 0.3 }}
+                className="space-y-3"
               >
                 {message.role === 'user' ? (
-                  <div className="text-ai-accent">
-                    You: {message.content}
+                  <div className="flex justify-end">
+                    <div className="bg-ai-accent/20 text-ai-accent px-4 py-2 rounded-lg max-w-[80%] border border-ai-accent/30">
+                      <div className="font-semibold text-xs mb-1">You</div>
+                      <div>{message.content}</div>
+                    </div>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    <div className="text-ai-accent font-bold">AI:</div>
-                    <div className="text-ai-text prose prose-invert prose-sm max-w-none">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {message.content}
-                      </ReactMarkdown>
+                  <div className="flex justify-start">
+                    <div className="bg-ai-bg/50 text-ai-text px-4 py-3 rounded-lg max-w-[90%] border border-ai-accent/20">
+                      <div className="text-ai-accent font-semibold text-xs mb-2">AI Assistant</div>
+                      <div className="prose prose-invert prose-sm max-w-none">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                   </div>
                 )}
               </motion.div>
             ))}
 
-            {/* Show terminal history for context */}
-            <AnimatePresence>
-              {state.history.map((item) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {item.type === 'input' ? (
-                    <div className="text-ai-accent">
-                      You: {item.content}
-                    </div>
-                  ) : (
-                    <div className="text-ai-text">
-                      {item.content}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </AnimatePresence>
-
             {isLoading && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-ai-accent"
+                className="flex justify-start"
               >
-                <div className="flex items-center space-x-2">
-                  <div>AI is thinking</div>
-                  <div className="flex space-x-1">
-                    <motion.div
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                      className="w-1 h-1 bg-ai-accent rounded-full"
-                    />
-                    <motion.div
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
-                      className="w-1 h-1 bg-ai-accent rounded-full"
-                    />
-                    <motion.div
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
-                      className="w-1 h-1 bg-ai-accent rounded-full"
-                    />
+                <div className="bg-ai-bg/50 text-ai-text px-4 py-3 rounded-lg border border-ai-accent/20">
+                  <div className="text-ai-accent font-semibold text-xs mb-2">AI Assistant</div>
+                  <div className="flex items-center space-x-2">
+                    <div className="text-ai-text">Thinking</div>
+                    <div className="flex space-x-1">
+                      <motion.div
+                        animate={{ opacity: [1, 0.3, 1] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                        className="w-1 h-1 bg-ai-accent rounded-full"
+                      />
+                      <motion.div
+                        animate={{ opacity: [1, 0.3, 1] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                        className="w-1 h-1 bg-ai-accent rounded-full"
+                      />
+                      <motion.div
+                        animate={{ opacity: [1, 0.3, 1] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                        className="w-1 h-1 bg-ai-accent rounded-full"
+                      />
+                    </div>
                   </div>
                 </div>
               </motion.div>
