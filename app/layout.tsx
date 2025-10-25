@@ -19,9 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${jetbrainsMono.variable} font-mono antialiased bg-terminal-bg text-terminal-text`}
-      >
+      <body className={`${jetbrainsMono.variable} font-mono antialiased bg-terminal-bg text-terminal-text`}>
         {children}
       </body>
     </html>

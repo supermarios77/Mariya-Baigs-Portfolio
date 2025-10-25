@@ -12,47 +12,34 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         terminal: {
-          bg: "#0A0A0F",
-          bgSecondary: "#0F0F15",
-          text: "#C9D1D9",
-          textSecondary: "#8B949E",
-          accent: "#00E0FF",
-          accentSecondary: "#00B8CC",
-          green: "#00FF88",
-          violet: "#9D4EDD",
-          border: "#21262D",
-          glow: "#00E0FF",
+          bg: "#000000",
+          text: "#EAEAEA",
+          secondary: "#6E7681",
+          accent: "#22D3EE",
+          accentHover: "#4DD0E1",
         },
         ai: {
-          bg: "#0A0A0F",
-          bgSecondary: "#0F0F15",
-          text: "#C9D1D9",
-          textSecondary: "#8B949E",
-          accent: "#9D4EDD",
-          accentSecondary: "#7C3AED",
-          border: "#21262D",
-          glow: "#9D4EDD",
-        },
-        neon: {
-          cyan: "#00E0FF",
-          violet: "#9D4EDD",
-          green: "#00FF88",
-          pink: "#FF6B9D",
+          bg: "#000000",
+          text: "#EAEAEA",
+          accent: "#C084FC",
+          accentHover: "#D8B4FE",
+          overlay: "rgba(192,132,252,0.02)",
         },
       },
       fontFamily: {
         mono: ["JetBrains Mono", "monospace"],
       },
+      fontSize: {
+        'terminal': ['16px', '1.5'],
+        'terminal-mobile': ['18px', '1.5'],
+      },
       animation: {
         "cursor-blink": "blink 1s infinite",
-        "typing": "typing 0.1s ease-in-out",
+        "typing": "typing 0.03s ease-in-out",
         "fade-in": "fadeIn 0.3s ease-in-out",
         "slide-up": "slideUp 0.3s ease-out",
         "glow-pulse": "glowPulse 2s ease-in-out infinite",
-        "scanline": "scanline 2s linear infinite",
-        "boot-text": "bootText 0.5s ease-out",
-        "terminal-glow": "terminalGlow 3s ease-in-out infinite",
-        "ai-activate": "aiActivate 0.8s ease-out",
+        "mode-transition": "modeTransition 0.5s ease",
       },
       keyframes: {
         blink: {
@@ -72,52 +59,22 @@ export default {
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
         glowPulse: {
-          "0%, 100%": { 
-            boxShadow: "0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor",
-            opacity: "0.8"
-          },
-          "50%": { 
-            boxShadow: "0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor",
-            opacity: "1"
-          },
+          "0%, 100%": { boxShadow: "0 0 25px rgba(34,211,238,0.06)" },
+          "50%": { boxShadow: "0 0 35px rgba(34,211,238,0.12)" },
         },
-        scanline: {
-          "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(100vh)" },
-        },
-        bootText: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        terminalGlow: {
-          "0%, 100%": { 
-            boxShadow: "0 0 20px rgba(0, 224, 255, 0.1), 0 0 40px rgba(0, 224, 255, 0.05)",
-          },
-          "50%": { 
-            boxShadow: "0 0 30px rgba(0, 224, 255, 0.2), 0 0 60px rgba(0, 224, 255, 0.1)",
-          },
-        },
-        aiActivate: {
-          "0%": { 
-            boxShadow: "0 0 20px rgba(0, 224, 255, 0.1)",
-            borderColor: "rgba(0, 224, 255, 0.3)"
-          },
-          "50%": { 
-            boxShadow: "0 0 40px rgba(157, 78, 221, 0.3), 0 0 80px rgba(157, 78, 221, 0.1)",
-            borderColor: "rgba(157, 78, 221, 0.5)"
-          },
-          "100%": { 
-            boxShadow: "0 0 30px rgba(157, 78, 221, 0.2), 0 0 60px rgba(157, 78, 221, 0.05)",
-            borderColor: "rgba(157, 78, 221, 0.3)"
-          },
+        modeTransition: {
+          "0%": { backgroundColor: "rgba(34,211,238,0.02)" },
+          "100%": { backgroundColor: "rgba(192,132,252,0.02)" },
         },
       },
       boxShadow: {
-        'terminal': '0 0 20px rgba(0, 224, 255, 0.1), 0 0 40px rgba(0, 224, 255, 0.05)',
-        'terminal-glow': '0 0 30px rgba(0, 224, 255, 0.2), 0 0 60px rgba(0, 224, 255, 0.1)',
-        'ai-glow': '0 0 30px rgba(157, 78, 221, 0.2), 0 0 60px rgba(157, 78, 221, 0.1)',
-        'neon-cyan': '0 0 10px #00E0FF, 0 0 20px #00E0FF, 0 0 30px #00E0FF',
-        'neon-violet': '0 0 10px #9D4EDD, 0 0 20px #9D4EDD, 0 0 30px #9D4EDD',
+        'terminal-glow': '0 0 25px rgba(34,211,238,0.06)',
+        'terminal-glow-intense': '0 0 35px rgba(34,211,238,0.12)',
+        'ai-glow': '0 0 25px rgba(192,132,252,0.06)',
+        'ai-glow-intense': '0 0 35px rgba(192,132,252,0.12)',
+      },
+      textShadow: {
+        'glow': '0 0 4px currentColor',
       },
     },
   },
