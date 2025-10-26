@@ -210,6 +210,7 @@ const commands = {
 export default function Adventure() {
   const { state, dispatch } = useTerminal();
   const [input, setInput] = useState('');
+  const [isNarrating, setIsNarrating] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const { playTypingSound, playCommandSound } = useSound();
@@ -257,7 +258,7 @@ export default function Adventure() {
     }
   }, [state.historyIndex, state.history, dispatch]);
 
-  const executeCommand = useCallback(() => {
+  const executeCommand = useCallback(async () => {
     const command = input.trim().toLowerCase();
     if (!command) return;
 
@@ -316,7 +317,27 @@ export default function Adventure() {
       setInput('');
       return;
     } else {
-      output = `❌ Unknown command: "${command}". Type 'help' for available commands.`;
+      // Unknown command - use AI narrator as fallback
+      setIsNarrating(true);
+      try {
+        const response = await fetch('/api/adventure-narrator', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            command,
+            locationName: location.name,
+            locationDescription: location.description,
+            inventory: state.gameState.inventory,
+            xp: state.gameState.xp,
+          }),
+        });
+        const data = await response.json();
+        output = data.response || `❌ Unknown command: "${command}". Type 'help' for available commands.`;
+      } catch {
+        output = `❌ The narrator falls silent. Try 'help' for available commands.`;
+      } finally {
+        setIsNarrating(false);
+      }
     }
 
     dispatch({
@@ -415,10 +436,11 @@ export default function Adventure() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-accent"
+              disabled={isNarrating}
+              className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-accent disabled:opacity-50"
               autoComplete="off"
               spellCheck="false"
-              placeholder="Type a command..."
+              placeholder={isNarrating ? "AI Narrator thinking..." : "Type a command..."}
             />
             <motion.div
               animate={{ opacity: [1, 0, 1] }}
