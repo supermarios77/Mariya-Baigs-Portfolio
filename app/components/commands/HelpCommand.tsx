@@ -9,8 +9,9 @@ export default function HelpCommand(_args: string[], _state: TerminalState): Rea
     { name: 'projects', description: 'View my portfolio projects' },
     { name: 'contact', description: 'Get in touch with me' },
     { name: 'ai', description: 'Enter AI chat mode' },
+    { name: 'adventure', description: 'Switch to Adventure mode (game)' },
     { name: 'clear', description: 'Clear the terminal screen' },
-    { name: 'theme', description: 'Switch between electric and classic themes' },
+    { name: 'theme', description: 'Switch between cyan, violet, emerald, amber' },
     { name: 'sound', description: 'Toggle typing sound effects' },
   ];
 

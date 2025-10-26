@@ -46,6 +46,7 @@ export default function Terminal() {
                   <div>• <span className="text-terminal-accent">about</span> — Learn about Mariya</div>
                   <div>• <span className="text-terminal-accent">projects</span> — View portfolio</div>
                   <div>• <span className="text-terminal-accent">ai</span> — Enter AI mode</div>
+                  <div>• <span className="text-terminal-accent">adventure</span> — Switch to Adventure mode</div>
                   <div>• <span className="text-terminal-accent">theme</span> — Change accent color</div>
                 </div>
               </div>
@@ -115,6 +116,11 @@ export default function Terminal() {
     // Handle special commands that change state
     if (command === 'ai') {
       dispatch({ type: 'SET_MODE', payload: 'AI' });
+      setInput('');
+      dispatch({ type: 'SET_HISTORY_INDEX', payload: -1 });
+      return;
+    } else if (command === 'adventure') {
+      dispatch({ type: 'SET_APP_MODE', payload: 'adventure' });
       setInput('');
       dispatch({ type: 'SET_HISTORY_INDEX', payload: -1 });
       return;
