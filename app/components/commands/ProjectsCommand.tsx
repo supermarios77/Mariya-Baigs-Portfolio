@@ -26,46 +26,6 @@ export default function ProjectsCommand(_args: string[], _state: TerminalState):
       demo: "https://apps.apple.com/app/tasbihly",
       source: "https://github.com/supermarios77/tasbihly"
     },
-    {
-      id: 3,
-      title: "AI Terminal Portfolio",
-      description: "Interactive terminal-style portfolio with AI chat integration",
-      tech: ["Next.js", "TypeScript", "Framer Motion", "TailwindCSS", "Gemini AI"],
-      status: "completed",
-      details: "This very portfolio! A unique terminal interface that showcases projects through CLI commands and features an AI chat mode for interactive exploration. Built with modern web technologies and integrated with Google Gemini AI for conversational interactions.",
-      demo: "https://mariya-baigs-portfolio.vercel.app",
-      source: "https://github.com/supermarios77/Mariya-Baigs-Portfolio"
-    },
-    {
-      id: 4,
-      title: "Neural Image Classifier",
-      description: "Advanced TensorFlow-based image classification system",
-      tech: ["TensorFlow", "Python", "OpenCV", "Flask", "Deep Learning"],
-      status: "completed",
-      details: "Built a convolutional neural network that can classify images across 1000 categories. Implemented data augmentation, transfer learning, and real-time prediction API. Achieved 95% accuracy on test datasets.",
-      demo: null,
-      source: "https://github.com/supermarios77/neural-classifier"
-    },
-    {
-      id: 5,
-      title: "Real-time Chat Application",
-      description: "Full-stack messaging app with real-time updates",
-      tech: ["React", "Node.js", "Socket.io", "MongoDB", "Express"],
-      status: "completed",
-      details: "Built a scalable chat application supporting multiple rooms, file uploads, emoji reactions, and real-time notifications. Handles 1000+ concurrent users with WebSocket connections and MongoDB for data persistence.",
-      demo: null,
-      source: "https://github.com/supermarios77/realtime-chat"
-    },
-    {
-      id: 6,
-      title: "Rust Systems Programming",
-      description: "Learning Rust for systems programming and performance",
-      tech: ["Rust", "Systems Programming", "Performance"],
-      status: "learning",
-      details: "Currently learning Rust for systems programming. Exploring memory safety, concurrency, and performance optimization. Building small projects to understand Rust's unique features and ecosystem.",
-      demo: null,
-      source: "https://github.com/supermarios77/rust-learning"
-    }
   ];
 
   const getStatusColor = (status: string) => {
