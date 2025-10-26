@@ -118,17 +118,69 @@ const commands = {
     }
     
     const itemDescriptions: Record<string, string> = {
-      'TensorFlow Badge': 'A golden badge certifying expertise in TensorFlow. The youngest certified developer!',
-      'IconLab Card': 'An AI-powered icon generator. Visit iconlab.site to see it in action.',
-      'Tasbihly Card': 'An elegant iOS app for spiritual counting. Beautiful design meets functionality.',
-      'Next.js Core': 'Advanced React framework expertise. Master of server-side rendering.',
-      'React Core': 'The UI library power of the modern web. Component-driven development.',
+      'TensorFlow Badge': 'A golden badge certifying expertise in TensorFlow. The youngest certified developer! Try: take',
+      'IconLab Card': 'An AI-powered icon generator. Visit iconlab.site to see it in action. Try: take',
+      'Tasbihly Card': 'An elegant iOS app for spiritual counting. Beautiful design meets functionality. Try: take',
+      'Next.js Core': 'Advanced React framework expertise. Master of server-side rendering. Try: take',
+      'React Core': 'The UI library power of the modern web. Component-driven development. Try: take',
+      'TypeScript Core': 'Type-safe JavaScript at scale. Try: take',
+      'Python Core': 'Data science and ML expertise. Try: take',
       'Contact Form': 'Ready to collaborate? Reach out through the comm hub!',
+      'LinkedIn Link': 'Professional network connection. Try: take',
+      'GitHub Access': 'Open source contributions. Try: take',
       'TensorFlow Certificate': '🎉 CERTIFIED: Google TensorFlow Developer - Youngest Ever',
+      'Hidden Project #1': 'A prototype of something amazing... Try: take',
       'Secret Achievement': '🌟 Achievement Unlocked: Deep Explorer',
+      'Neural Network Blueprint': 'Deep learning architecture diagrams. Try: take',
+      'Future Project Portal': 'Glimpse into upcoming innovations. Try: take',
     };
     
-    return itemDescriptions[foundItem] || `A ${foundItem}. It looks interesting!`;
+    return itemDescriptions[foundItem] || `A ${foundItem}. It looks interesting! Type 'take ${foundItem}' to collect it.`;
+  },
+  
+  take: (location: Location, item: string, gameState: { inventory: string[] }, dispatch: React.Dispatch<TerminalAction>) => {
+    const foundItem = location.items.find(i => 
+      i.toLowerCase().includes(item.toLowerCase())
+    );
+    
+    if (!foundItem) {
+      return `❌ No "${item}" found here. Items available: ${location.items.length > 0 ? location.items.join(', ') : 'none'}`;
+    }
+    
+    const alreadyTaken = gameState.inventory.includes(foundItem);
+    if (alreadyTaken) {
+      return `You already have the ${foundItem} in your inventory!`;
+    }
+    
+    dispatch({ type: 'ADD_TO_INVENTORY', payload: foundItem });
+    dispatch({ type: 'ADD_XP', payload: 15 });
+    
+    // Check for collection achievements
+    const newInventoryLength = gameState.inventory.length + 1;
+    if (newInventoryLength === 1) {
+      dispatch({ type: 'UNLOCK_ACHIEVEMENT', payload: 'First Item' });
+    } else if (newInventoryLength === 5) {
+      dispatch({ type: 'UNLOCK_ACHIEVEMENT', payload: 'Collector' });
+    } else if (newInventoryLength === 10) {
+      dispatch({ type: 'UNLOCK_ACHIEVEMENT', payload: 'Master Collector' });
+    }
+    
+    const itemMessages: Record<string, string> = {
+      'TensorFlow Badge': '🎖️ You collect the TensorFlow Badge! +15 XP. This proves expertise!',
+      'IconLab Card': '🎨 You collect the IconLab Card! +15 XP. Innovation captured!',
+      'Tasbihly Card': '📱 You collect the Tasbihly Card! +15 XP. Beautiful design preserved!',
+      'Next.js Core': '⚡ You collect the Next.js Core! +15 XP. Framework mastery!',
+      'React Core': '⚛️ You collect the React Core! +15 XP. UI library power!',
+      'TypeScript Core': '📘 You collect the TypeScript Core! +15 XP. Type safety achieved!',
+      'Python Core': '🐍 You collect the Python Core! +15 XP. Data science unlocked!',
+      'LinkedIn Link': '🔗 You collect the LinkedIn Link! +15 XP. Network connected!',
+      'GitHub Access': '💻 You collect the GitHub Access! +15 XP. Open source ready!',
+      'Neural Network Blueprint': '🧠 You collect the Neural Network Blueprint! +15 XP. Deep learning secured!',
+      'Future Project Portal': '🔮 You collect the Future Project Portal! +15 XP. Innovation ahead!',
+      'Hidden Project #1': '🎁 You collect the Hidden Project! +15 XP. Secret discovered!',
+    };
+    
+    return itemMessages[foundItem] || `📦 You collect ${foundItem}! +15 XP`;
   },
   
   inventory: (gameState: { inventory: string[] }) => {
@@ -138,12 +190,12 @@ const commands = {
     return `📦 Inventory:\n${gameState.inventory.map((item: string, i: number) => `${i + 1}. ${item}`).join('\n')}`;
   },
   
-  status: (gameState: { level: number; xp: number; location: string; discoveredAreas: string[]; achievements: string[] }) => {
-    return `🎮 Status\n━━━━━━━━━━━━━━━━\nLevel: ${gameState.level}\nXP: ${gameState.xp}\nLocation: ${gameState.location}\nAreas Discovered: ${gameState.discoveredAreas.length}\nAchievements: ${gameState.achievements.length > 0 ? gameState.achievements.join(', ') : 'None yet'}`;
+  status: (gameState: { level: number; xp: number; location: string; discoveredAreas: string[]; achievements: string[]; inventory: string[] }) => {
+    return `🎮 Status\n━━━━━━━━━━━━━━━━\nLevel: ${gameState.level}\nXP: ${gameState.xp}\nLocation: ${gameState.location}\nItems Collected: ${gameState.inventory.length}\nAreas Discovered: ${gameState.discoveredAreas.length}\nAchievements: ${gameState.achievements.length > 0 ? gameState.achievements.join(', ') : 'None yet'}\n\nNext Level: ${((gameState.level * 100) - gameState.xp)} XP needed`;
   },
   
   help: () => {
-    return `🎮 Adventure Mode Commands:\n━━━━━━━━━━━━━━━━\n📝 look         - Describe current location\n🚶 go [direction] - Move to another area\n🔍 inspect [item] - Examine an item\n📦 inventory     - Show your inventory\n📊 status        - Show XP and achievements\n❓ help          - Show this help\n🏠 exit          - Return to terminal mode\n\n💡 Directions: north, south, east, west`;
+    return `🎮 Adventure Mode Commands:\n━━━━━━━━━━━━━━━━\n📝 look         - Describe current location\n🚶 go [direction] - Move to another area (north/south/east/west)\n🔍 inspect [item] - Examine an item\n📥 take [item]    - Collect an item (+15 XP!)\n📦 inventory     - Show your inventory\n📊 status        - Show XP and achievements\n🎭 sudo          - Secret: Root access\n🌌 matrix        - Secret: Enter the simulation\n❓ help          - Show this help\n🏠 exit          - Return to terminal mode\n\n💡 Collect items to gain XP and unlock achievements!`;
   },
   
   sudo: () => {
@@ -242,6 +294,9 @@ export default function Adventure() {
     } else if (command.startsWith('inspect ')) {
       const item = command.replace('inspect ', '');
       output = commands.inspect(location, item);
+    } else if (command.startsWith('take ')) {
+      const item = command.replace('take ', '');
+      output = commands.take(location, item, state.gameState, dispatch);
     } else if (command === 'inventory' || command === 'inv' || command === 'i') {
       output = commands.inventory(state.gameState);
     } else if (command === 'status' || command === 'stat') {
