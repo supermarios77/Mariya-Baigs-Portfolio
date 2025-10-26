@@ -279,19 +279,19 @@ export default function Adventure() {
   }, [input, state, dispatch]);
 
   useEffect(() => {
-    if (state.history.length === 0) {
+    if (state.history.length === 0 && state.appMode === 'adventure') {
       const location = locations[state.gameState.location];
       dispatch({
         type: 'ADD_HISTORY_ITEM',
         payload: {
-          id: 'welcome',
+          id: `welcome-${Date.now()}`,
           type: 'output',
           content: `🎮 Welcome to Adventure Mode!\n━━━━━━━━━━━━━━━━\n\nYou are in the ${location.name}.\n\n${location.description}\n\nType 'help' for commands or 'look' to examine your surroundings.`,
           timestamp: new Date(),
         },
       });
     }
-  }, [state.gameState.location, dispatch, state.history.length]);
+  }, [state.history.length, state.appMode, state.gameState.location, dispatch]);
 
   return (
     <div className="min-h-screen bg-terminal-bg flex items-center justify-center p-4">
