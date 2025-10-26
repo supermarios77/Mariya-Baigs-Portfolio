@@ -422,6 +422,25 @@ export default function Adventure() {
                   )}
                 </motion.div>
               ))}
+              
+              {/* AI Narrator Loading Indicator */}
+              {isNarrating && (
+                <motion.div
+                  initial={{ opacity: 0, y: 2 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="text-terminal-text/60 italic"
+                >
+                  <div className="flex items-center gap-2">
+                    <motion.div
+                      animate={{ opacity: [1, 0.3, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="w-1 h-1 rounded-full bg-terminal-accent"
+                    />
+                    <span>AI Narrator is weaving a response...</span>
+                  </div>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
 
